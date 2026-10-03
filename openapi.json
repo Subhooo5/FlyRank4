@@ -1,0 +1,78 @@
+{
+  "openapi": "3.0.0",
+  "info": { "title": "Auth Practice API", "version": "1.0.0" },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    }
+  },
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "summary": "Create a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" }, "400": { "description": "Bad Request" } }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Log in and get tokens",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" }, "400": { "description": "Bad Request" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Log out",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "204": { "description": "No Content" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/protected/profile": {
+      "get": {
+        "summary": "Get private profile",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/protected/dashboard": {
+      "get": {
+        "summary": "Get dashboard",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/public/info": {
+      "get": {
+        "summary": "Public info",
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  }
+}
